@@ -1,34 +1,9 @@
----
-layout: page
-title: About
-date: 2010-12-31 23:00:00 +0000
-menu:
-  main:
-    weight: 1
++++
+title = "About"
++++
 
----
-<p class="message">
-  Hey there! This page is included as an example. Feel free to customize it for your own use upon downloading. Carry on!
-</p>
+ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent lacinia lorem quis sodales auctor. Donec bibendum odio leo, bibendum iaculis lectus dapibus sit amet. Etiam ut euismod lectus, vel finibus metus. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Integer quis vestibulum justo. Duis scelerisque ullamcorper sem, eget congue lorem ultrices mattis. Nam ut mollis tellus, id facilisis turpis. Duis ac egestas mi, a mattis dolor. Curabitur vestibulum est nec tortor hendrerit, vehicula malesuada quam tempor. Duis ornare tortor dapibus, scelerisque est lacinia, aliquet mi. Vivamus convallis malesuada augue ac viverra. Sed molestie erat at sem dapibus porttitor. Vestibulum lacinia, enim id feugiat varius, felis erat sollicitudin nisl, sit amet semper nisi nunc in nisl. Sed dapibus ullamcorper nulla, et molestie lacus accumsan ac.
 
-In the novel, *The Strange Case of Dr. Jeykll and Mr. Hyde*, Mr. Poole is Dr. Jekyll's virtuous and loyal butler. Similarly, Poole is an upstanding and effective butler that helps you build Jekyll themes. It's made by [@mdo](https://twitter.com/mdo).
+Fusce auctor in justo nec porta. Aliquam vitae molestie libero. In scelerisque dolor ac est lacinia, at consectetur neque vulputate. Curabitur ornare lorem vitae euismod vestibulum. Sed non arcu nunc. Suspendisse potenti. Maecenas tristique, dui egestas mattis pulvinar, tortor ligula mollis libero, ac ullamcorper erat nibh in augue. Curabitur nunc diam, pretium at porta et, volutpat sit amet ligula. Proin urna lorem, luctus sit amet metus quis, tempus rutrum augue. Phasellus ut nunc dolor.
 
-There are currently two themes built on Poole:
-
-* [Hyde](http://hyde.getpoole.com)
-* [Lanyon](http://lanyon.getpoole.com)
-
-Learn more and contribute on [GitHub](https://github.com/poole).
-
-## Setup
-
-Some fun facts about the setup of this project include:
-
-* Built for [Jekyll](http://jekyllrb.com)
-* Developed on GitHub and hosted for free on [GitHub Pages](https://pages.github.com)
-* Coded with [Sublime Text 2](http://sublimetext.com), an amazing code editor
-* Designed and developed while listening to music like [Blood Bros Trilogy](https://soundcloud.com/maddecent/sets/blood-bros-series)
-
-Have questions or suggestions? Feel free to [open an issue on GitHub](https://github.com/poole/issues/new) or [ask me on Twitter](https://twitter.com/mdo).
-
-Thanks for reading!
+Duis a porta mi, non viverra erat. Nam tincidunt lorem nec sollicitudin laoreet. Mauris faucibus vitae urna ac aliquet. Vivamus rutrum rhoncus tempor. Donec massa diam, molestie sit amet nulla eu, venenatis egestas urna. Vivamus hendrerit elit velit, ut volutpat diam condimentum vel. Etiam ultricies, nulla tincidunt rhoncus placerat, velit nisl gravida velit, mollis vestibulum risus mauris sed lectus.
