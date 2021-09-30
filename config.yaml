@@ -1,0 +1,16 @@
+baseURL: '/'
+languageCode: 'en-us'
+title: 'Celeritas'
+theme: 'hyde'
+
+Menus:
+    main:
+        - Name: 'Github'
+          URL: 'https://github.com/CeleritasML/'
+
+params:
+    description: 'Yet another team cracking machine learning problems.'
+    # themeColor: 'theme-base-0d'
+    layoutReverse: false
+# disqusShortname : username
+# googleAnalytics: Your tracking code
