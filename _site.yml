@@ -1,13 +1,13 @@
 name: "celeritas-site"
-title: "celeritas"
+title: "CeleritasML"
 description: |
   Yet another team cracking machine learning problems.
 output_dir: "_site"
-base_url: https://celeritas.netlify.app/
+base_url: https://celeritasml.netlify.app/
 navbar:
   logo:
     image: static/logo.png
-    href: https://celeritas.netlify.app/
+    href: https://celeritasml.netlify.app/
   search: true
   source_url: https://github.com/celeritas/celeritas-site
   right:

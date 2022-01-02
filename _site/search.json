@@ -6,14 +6,14 @@
       "description": "Some additional details about the blog",
       "author": [],
       "contents": "\nCeleritas is a solution-based intellectual collective.\nWe are theorists and practitioners, preachers and rulebreakers.\nWe work on projects for joy.\nWe develop our own ideas.\nFeaturing:\nErcong\nJingsong\nQinren\nRui\n\n\n\n",
-      "last_modified": "2022-01-01T20:39:08-05:00"
+      "last_modified": "2022-01-01T20:43:38-05:00"
     },
     {
       "path": "index.html",
       "title": "celeritas",
       "author": [],
       "contents": "\n\n\n\n",
-      "last_modified": "2022-01-01T20:39:12-05:00"
+      "last_modified": "2022-01-01T20:43:39-05:00"
     }
   ],
   "collections": ["posts/posts.json"]
