@@ -1,0 +1,34 @@
+---
+title: "Data Science Career Paths & Skillsets in 2021"
+description: |
+  A final project of ANLY-511: Prob Modeling/Stat Computing at Georgetown University.
+preview: images/kaggle.png
+author:
+  - name: Jingsong Gao
+    url: https://github.com/jingshenSN2
+    affiliation: Georgetown University
+    affiliation_url: https://analytics.georgetown.edu/
+  - name: Ercong Luo
+    url: https://github.com/ErcongLuo
+    affiliation: Georgetown University
+    affiliation_url: https://analytics.georgetown.edu/
+  - name: Rui Qiu
+    url: https://github.com/rexarski
+    affiliation: Georgetown University
+    affiliation_url: https://analytics.georgetown.edu/
+date: 2022-12-06
+output:
+  distill::distill_article:
+    self_contained: false
+---
+
+
+A final project of *ANLY-511: Prob Modeling/Stat Computing* at Georgetown University.
+
+Presented by:
+
+- Jingsong Gao, jg2109@georgetown.edu
+- Ercong Luo, el890@georgetown.edu
+- Rui Qiu, rq47@georgetown.edu
+
+**🔗[See the published page.](https://celeritasml.github.io/kaggle-ml-survey/)**

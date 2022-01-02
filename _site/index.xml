@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:distill="https://distill.pub/journal/" version="2.0">
+  <channel>
+    <title>celeritas</title>
+    <link>https://celeritas.netlify.app/</link>
+    <atom:link href="https://celeritas.netlify.app/index.xml" rel="self" type="application/rss+xml"/>
+    <description>Yet another team cracking machine learning problems.
+</description>
+    <generator>Distill</generator>
+    <lastBuildDate>Tue, 06 Dec 2022 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>Data Science Career Paths &amp; Skillsets in 2021</title>
+      <dc:creator>Jingsong Gao</dc:creator>
+      <dc:creator>Ercong Luo</dc:creator>
+      <dc:creator>Rui Qiu</dc:creator>
+      <link>https://celeritas.netlify.app/posts/2022-12-06-kaggle</link>
+      <description>A final project of ANLY-511: Prob Modeling/Stat Computing at Georgetown University.</description>
+      <guid>https://celeritas.netlify.app/posts/2022-12-06-kaggle</guid>
+      <pubDate>Tue, 06 Dec 2022 00:00:00 +0000</pubDate>
+      <media:content url="https://celeritas.netlify.app/posts/2022-12-06-kaggle/images/kaggle.png" medium="image" type="image/png" width="1536" height="960"/>
+    </item>
+    <item>
+      <title>A Constrained Long-form Question Answering (LFQA) Model on eli5_category</title>
+      <dc:creator>Jingsong Gao</dc:creator>
+      <dc:creator>Qinren Zhou</dc:creator>
+      <dc:creator>Rui Qiu</dc:creator>
+      <link>https://celeritas.netlify.app/posts/2022-12-01-eli5c</link>
+      <description>A final project of ANLY-580: NLP for Data Analytics at Georgetown University.</description>
+      <guid>https://celeritas.netlify.app/posts/2022-12-01-eli5c</guid>
+      <pubDate>Thu, 01 Dec 2022 00:00:00 +0000</pubDate>
+      <media:content url="https://celeritas.netlify.app/posts/2022-12-01-eli5c/images/eli5c.jpg" medium="image" type="image/jpeg"/>
+    </item>
+  </channel>
+</rss>
