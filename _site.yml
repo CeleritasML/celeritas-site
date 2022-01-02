@@ -9,7 +9,7 @@ navbar:
     image: static/logo.png
     href: https://celeritasml.netlify.app/
   search: true
-  source_url: https://github.com/celeritas/celeritas-site
+  source_url: https://github.com/celeritasml/celeritas-site
   right:
     - text: "Home"
       href: index.html
