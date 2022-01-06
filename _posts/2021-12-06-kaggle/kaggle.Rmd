@@ -16,7 +16,7 @@ author:
     url: https://github.com/rexarski
     affiliation: Georgetown University
     affiliation_url: https://analytics.georgetown.edu/
-date: 2022-12-06
+date: 2021-12-06
 output:
   distill::distill_article:
     self_contained: false
