@@ -70,7 +70,7 @@ In order to control the overlapping, [Hurdles to Progress in Long-form Question 
 1. Automatically retrieving paraphrases and then running human validation to eliminate them.
 2. Holding out entire genres or domains to reduce the possibility of overlap — for example, keeping Q/A on Sports only in the held-out sets.
 
-Therefore, we built our abridged but categorized version of the ELI5 dataset using posts in the subreddit from 2017 to 2021, which named as [ELI5_Category](https://huggingface.co/datasets/jsgao/eli5_category). Our dataset contains more than **100,000 questions and 220,000 answers**.
+Therefore, we built our abridged but categorized version of the ELI5 dataset using posts in the subreddit from 2017 to 2021, which named as [ELI5_Category](https://huggingface.co/datasets/eli5_category). Our dataset contains more than **100,000 questions and 220,000 answers**.
 
 The dataset is split into 1 training set, 2 validation sets, and 1 test set according to the category. The number of questions contain in each set is listed below.
 
@@ -220,7 +220,7 @@ As proposed in the proposal, a prototype of open-ended question-answering websit
 > - [GitHub Repository🐱](https://github.com/rexarski/ANLY580-final-project)
 > - [Colab Playground🧪](https://drive.google.com/drive/folders/0APh2KjbUaOpxUk9PVA) (Need GU email or permission to access.).
 >     - [Working notebook📙](https://colab.research.google.com/drive/1NkD-meVW6U2I3WTETAER1LZ7G8db6L1D).
-> - [jsgao/eli5_category📚](https://huggingface.co/datasets/jsgao/eli5_category)
+> - [eli5_category📚](https://huggingface.co/datasets/eli5_category)
 
 ***
 

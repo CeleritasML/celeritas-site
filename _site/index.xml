@@ -38,7 +38,602 @@
       <dc:creator>Qinren Zhou</dc:creator>
       <dc:creator>Rui Qiu</dc:creator>
       <link>https://celeritasml.netlify.app/posts/2021-12-01-eli5c</link>
-      <description>A final project of ANLY-580: NLP for Data Analytics at Georgetown University.</description>
+      <description>
+
+
+&lt;p&gt;A final project of &lt;em&gt;ANLY-580: NLP for Data Analytics&lt;/em&gt; at
+Georgetown University.&lt;/p&gt;
+&lt;div class="figure"&gt;
+&lt;img
+src="https://images.squarespace-cdn.com/content/v1/510699ffe4b08ec13ec4aa1f/1366777178736-N4TDH9YOKKO1S4AKUZMF/082_Bert-Bart.jpg?format=1000w"
+alt="" /&gt;
+&lt;p class="caption"&gt;img&lt;/p&gt;
+&lt;/div&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Credit: &lt;a
+href="http://landoflebeef.com/blog/2013/4/24/bert-and-bart"&gt;Darren
+Lebeuf&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id="introduction"&gt;1. Introduction&lt;/h2&gt;
+&lt;p&gt;The search engines nowadays enable us to ask any questions as a
+search query. However, when it comes to a scientific question, the
+answer to that question could be either not accurate enough or too
+specialized to understand. For instance, to fully apprehend a Wikipedia
+page, one might need much prior knowledge in a particular area.&lt;/p&gt;
+&lt;p&gt;Prior research on long-form question answering aims to fix this
+issue. &lt;a href="https://ai.facebook.com/blog/longform-qa/"&gt;ELI5: Long
+Form Question Answering&lt;/a&gt; by Facebook (2019) and &lt;a
+href="https://arxiv.org/abs/2103.06332"&gt;Hurdles to Progress in Long-form
+Question Answering&lt;/a&gt; by Google (2021) are two representative papers in
+this area. Facebook created the ELI5 dataset and used the ROUGE-L metric
+to evaluate the long-form answers in their paper, which the dataset and
+metric widely used in later research. However, Google’s paper pointed
+out that the dataset has severe train/validation overlapping and the
+metric showing a lack of distinction between random answers and gold
+answers.&lt;/p&gt;
+&lt;p&gt;Therefore, instead of training models on a dataset with potential
+issues and gaining higher grades using an invalid metric, our project
+will focus on recreating a categorized ELI5 dataset and proposing more
+discriminatory metrics for this LFQA task.&lt;/p&gt;
+&lt;h2 id="dataset"&gt;2. Dataset&lt;/h2&gt;
+&lt;h3 id="source"&gt;2.1 Source&lt;/h3&gt;
+&lt;p&gt;The subreddit &lt;a
+href="https://reddit.com/r/explainlikeim5"&gt;r/explainlikeim5&lt;/a&gt; (ELI5)
+from Reddit is a worthy training dataset. Users in this subreddit are
+known for their objective, thorough and intuitive explanations of
+various questions. ELI5 is appealing because answers are supposed to be
+entirely self-contained and thus rely less on pre-existing knowledge of
+the world and use more straightforward language that is easier to
+model.&lt;/p&gt;
+&lt;h3 id="facebooks-eli5"&gt;2.2 Facebook’s &lt;code&gt;ELI5&lt;/code&gt;&lt;/h3&gt;
+&lt;p&gt;The &lt;a href="https://huggingface.co/datasets/eli5"&gt;ELI5 dataset&lt;/a&gt;
+created by Facebook contains more than 270,000 posts in the subreddit
+from 2012 to 2019, and each post consists of a scientific question and
+some easy-to-understand answers.&lt;/p&gt;
+&lt;h3 id="issues-of-uncategorized-data"&gt;2.3 Issues of Uncategorized
+Data&lt;/h3&gt;
+&lt;p&gt;In Google AI Blog’s post &lt;a
+href="https://ai.googleblog.com/2021/03/progress-and-challenges-in-long-form.html"&gt;Progress
+and Challenges in Long-Form Open-Domain Question Answering&lt;/a&gt;,
+researchers addressed three concerning trends in the progress of
+building a more sensible model:&lt;/p&gt;
+&lt;ol style="list-style-type: decimal"&gt;
+&lt;li&gt;Many held-out questions are paraphrased in the training set. This is
+caused by the fact that even though the subreddit /r/explainlikeim5 is
+clearly against repeated questions, it is simply unavoidable.&lt;/li&gt;
+&lt;li&gt;ROGUE metric is not always a good evaluation standard. This one is
+actually not related to the uncategorized characteristic of the data,
+but we will mention it again in the later section.&lt;/li&gt;
+&lt;li&gt;The third issue comes as the byproduct of previous two. If we set an
+answer conditionally generated on random documents, instead of relevant
+documents, it still can provide a “correct” and factual answer. And at
+the same time, the longer answer has a higher ROGUE-L score.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;We aim to tackle the &lt;strong&gt;first issue&lt;/strong&gt; our categorized
+version of data.&lt;/p&gt;
+&lt;h3 id="our-eli5_category"&gt;2.4 Our &lt;code&gt;ELI5_Category&lt;/code&gt;&lt;/h3&gt;
+&lt;p&gt;So the main question here is: &lt;strong&gt;Why categorize the
+data?&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Recall the overlapping issue we metioned earlier. The most
+straightforward solution to this is to figure out why the overlapping
+occurs, then we can purposefully resolve it.&lt;/p&gt;
+&lt;p&gt;With the introduction of the thread tagging system in 2017, the
+questions that appeared in the subreddit are more organized in such a
+manner. As a result, if we take a random sample collections of questions
+as the training set, and the sample size is large enough, it barely
+impossible to neglect the fact some questions would be repetitive or
+overlapping.&lt;/p&gt;
+&lt;p&gt;In order to control the overlapping, &lt;a
+href="https://arxiv.org/abs/2103.06332"&gt;Hurdles to Progress in Long-form
+Question Answering&lt;/a&gt; offers two specific solutions:&lt;/p&gt;
+&lt;ol style="list-style-type: decimal"&gt;
+&lt;li&gt;Automatically retrieving paraphrases and then running human
+validation to eliminate them.&lt;/li&gt;
+&lt;li&gt;Holding out entire genres or domains to reduce the possibility of
+overlap — for example, keeping Q/A on Sports only in the held-out
+sets.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Therefore, we built our abridged but categorized version of the ELI5
+dataset using posts in the subreddit from 2017 to 2021, which named as
+&lt;a
+href="https://huggingface.co/datasets/eli5_category"&gt;ELI5_Category&lt;/a&gt;.
+Our dataset contains more than &lt;strong&gt;100,000 questions and 220,000
+answers&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;The dataset is split into 1 training set, 2 validation sets, and 1
+test set according to the category. The number of questions contain in
+each set is listed below.&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr class="header"&gt;
+&lt;th&gt;&lt;/th&gt;
+&lt;th&gt;Train&lt;/th&gt;
+&lt;th&gt;Valid&lt;/th&gt;
+&lt;th&gt;Valid2&lt;/th&gt;
+&lt;th&gt;Test&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr class="odd"&gt;
+&lt;td&gt;&lt;code&gt;Biology&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;32769&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class="even"&gt;
+&lt;td&gt;&lt;code&gt;Chemistry&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;6633&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class="odd"&gt;
+&lt;td&gt;&lt;code&gt;Culture&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;5446&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class="even"&gt;
+&lt;td&gt;&lt;code&gt;Earth Science&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;677&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class="odd"&gt;
+&lt;td&gt;&lt;code&gt;Economics&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;5901&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class="even"&gt;
+&lt;td&gt;&lt;code&gt;Engineering&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;5411&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class="odd"&gt;
+&lt;td&gt;&lt;code&gt;Mathematics&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;1912&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class="even"&gt;
+&lt;td&gt;&lt;code&gt;Other&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;19312&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class="odd"&gt;
+&lt;td&gt;&lt;code&gt;Physics&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;10196&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class="even"&gt;
+&lt;td&gt;&lt;code&gt;Psychology&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;338&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class="odd"&gt;
+&lt;td&gt;&lt;code&gt;Technology&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;14034&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class="even"&gt;
+&lt;td&gt;&lt;code&gt;Repost&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;2375&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class="odd"&gt;
+&lt;td&gt;&lt;strong&gt;Total&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;91772&lt;/td&gt;
+&lt;td&gt;5446&lt;/td&gt;
+&lt;td&gt;2375&lt;/td&gt;
+&lt;td&gt;5411&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;Some simple aggregations on the ELI5 data will reveal that:&lt;/p&gt;
+&lt;table&gt;
+&lt;colgroup&gt;
+&lt;col width="23%" /&gt;
+&lt;col width="25%" /&gt;
+&lt;col width="25%" /&gt;
+&lt;col width="26%" /&gt;
+&lt;/colgroup&gt;
+&lt;thead&gt;
+&lt;tr class="header"&gt;
+&lt;th align="left"&gt;&lt;code&gt;category&lt;/code&gt;&lt;/th&gt;
+&lt;th align="right"&gt;&lt;code&gt;mean_top_score&lt;/code&gt;&lt;/th&gt;
+&lt;th align="right"&gt;&lt;code&gt;mean_all_score&lt;/code&gt;&lt;/th&gt;
+&lt;th align="right"&gt;&lt;code&gt;mean_answer_num&lt;/code&gt;&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr class="odd"&gt;
+&lt;td align="left"&gt;1 Biology&lt;/td&gt;
+&lt;td align="right"&gt;205.&lt;/td&gt;
+&lt;td align="right"&gt;114.&lt;/td&gt;
+&lt;td align="right"&gt;2.37&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class="even"&gt;
+&lt;td align="left"&gt;2 Chemistry&lt;/td&gt;
+&lt;td align="right"&gt;197.&lt;/td&gt;
+&lt;td align="right"&gt;114.&lt;/td&gt;
+&lt;td align="right"&gt;2.15&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class="odd"&gt;
+&lt;td align="left"&gt;3 Earth Science&lt;/td&gt;
+&lt;td align="right"&gt;170.&lt;/td&gt;
+&lt;td align="right"&gt;81.9&lt;/td&gt;
+&lt;td align="right"&gt;2.54&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class="even"&gt;
+&lt;td align="left"&gt;4 Economics&lt;/td&gt;
+&lt;td align="right"&gt;141.&lt;/td&gt;
+&lt;td align="right"&gt;75.3&lt;/td&gt;
+&lt;td align="right"&gt;2.84&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class="odd"&gt;
+&lt;td align="left"&gt;5 Mathematics&lt;/td&gt;
+&lt;td align="right"&gt;209.&lt;/td&gt;
+&lt;td align="right"&gt;108.&lt;/td&gt;
+&lt;td align="right"&gt;2.66&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class="even"&gt;
+&lt;td align="left"&gt;6 Other&lt;/td&gt;
+&lt;td align="right"&gt;133.&lt;/td&gt;
+&lt;td align="right"&gt;72.1&lt;/td&gt;
+&lt;td align="right"&gt;2.62&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class="odd"&gt;
+&lt;td align="left"&gt;7 Physics&lt;/td&gt;
+&lt;td align="right"&gt;136.&lt;/td&gt;
+&lt;td align="right"&gt;78.4&lt;/td&gt;
+&lt;td align="right"&gt;2.24&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class="even"&gt;
+&lt;td align="left"&gt;8 Psychology&lt;/td&gt;
+&lt;td align="right"&gt;159.&lt;/td&gt;
+&lt;td align="right"&gt;78.4&lt;/td&gt;
+&lt;td align="right"&gt;2.60&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class="odd"&gt;
+&lt;td align="left"&gt;9 Technology&lt;/td&gt;
+&lt;td align="right"&gt;169.&lt;/td&gt;
+&lt;td align="right"&gt;91.7&lt;/td&gt;
+&lt;td align="right"&gt;2.43&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class="even"&gt;
+&lt;td align="left"&gt;10 Culture&lt;/td&gt;
+&lt;td align="right"&gt;162.&lt;/td&gt;
+&lt;td align="right"&gt;79.7&lt;/td&gt;
+&lt;td align="right"&gt;3.14&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class="odd"&gt;
+&lt;td align="left"&gt;11 Repost&lt;/td&gt;
+&lt;td align="right"&gt;281.&lt;/td&gt;
+&lt;td align="right"&gt;158.&lt;/td&gt;
+&lt;td align="right"&gt;2.56&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class="even"&gt;
+&lt;td align="left"&gt;12 Engineering&lt;/td&gt;
+&lt;td align="right"&gt;179.&lt;/td&gt;
+&lt;td align="right"&gt;92.5&lt;/td&gt;
+&lt;td align="right"&gt;2.58&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;div class="figure"&gt;
+&lt;img
+src="https://github.com/rexarski/ANLY580-final-project/blob/main/viz/radar-category.png?raw=true"
+alt="" /&gt;
+&lt;p class="caption"&gt;summary-stats&lt;/p&gt;
+&lt;/div&gt;
+&lt;ul&gt;
+&lt;li&gt;Why reposts have higer scores:
+&lt;ul&gt;
+&lt;li&gt;Posts with more reposts tend to contain trending topcis, which means
+users are more motivated to answer.&lt;/li&gt;
+&lt;li&gt;Higer scores of reposts can come from higher correctness of the
+solution, that’s also why those questions are frequently reposted.&lt;/li&gt;
+&lt;li&gt;Reposts are not classified by category intentionally, indicating
+that using the reposts as training set may lead to overlapping
+problems.&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="ground-truth"&gt;2.5 Ground Truth&lt;/h3&gt;
+&lt;p&gt;Since answers are generated based on pre-existing knowledges, the
+model need to find supporting documents for questions first. Here, we
+use the &lt;a
+href="https://huggingface.co/datasets/wiki_snippets"&gt;wiki_snippets(wiki40b_en_100_0)&lt;/a&gt;
+dataset as the ground truth to support the model answering those
+questions. This wikipedia dataset contains more than 17,500,000 snippets
+from Wikipedia.&lt;/p&gt;
+&lt;h2 id="model"&gt;3. Model&lt;/h2&gt;
+&lt;h3 id="two-stage-model-structure"&gt;3.1 Two-stage Model Structure&lt;/h3&gt;
+&lt;p&gt;&lt;img src="https://yjernite.github.io/images/ELI5animation.gif"
+alt="two-stage model" /&gt; &amp;gt; Credit: &lt;a
+href="https://yjernite.github.io/lfqa.html"&gt;Yacine Jernite&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Our LFQA model has a two-stage model structure:
+&lt;code&gt;Retriever-Generator&lt;/code&gt;. First, document retriever model
+selects a set of Wikipedia passages that relevant to the input questions
+as supporting documents. Then, the answer generator model takes the
+concatenation of the input question and supporting documents as input
+and writes the answer.&lt;/p&gt;
+&lt;h3 id="retrierver-bert-faiss"&gt;3.2 Retrierver: BERT + Faiss&lt;/h3&gt;
+&lt;p&gt;&lt;img src="https://yjernite.github.io/images/ELI5contrastive.svg"
+alt="bert" /&gt; &amp;gt; Credit: &lt;a
+href="https://yjernite.github.io/lfqa.html"&gt;Yacine Jernite&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;The retriever model is based on a pretrained BERT-like structure, but
+with an additional linear layer that projects the BERT output down to
+128 dimensions embeddings. The projection layer is finetuned using QA
+pairs in training set to minimize the dot-product between question
+embedding and answer embedding.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://yjernite.github.io/images/ELI5wiki_index.svg"
+alt="faiss" /&gt; &amp;gt; Credit: &lt;a
+href="https://yjernite.github.io/lfqa.html"&gt;Yacine Jernite&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;To find the best relevant supporting documents, we do a Approximate
+Nearest Neighbor search with all Wikipedia passages’ embedding vectors.
+The ANN search is accelerated by pre-clustering Wikipedia embeddings
+using Facebook’s &lt;a
+href="https://ai.facebook.com/tools/faiss/"&gt;faiss&lt;/a&gt; library.&lt;/p&gt;
+&lt;h3 id="generator-bart"&gt;3.3 Generator: BART&lt;/h3&gt;
+&lt;p&gt;&lt;img
+src="https://production-media.paperswithcode.com/methods/Screen_Shot_2020-06-01_at_9.49.47_PM.png"
+alt="bart" /&gt; &amp;gt; Credit: &lt;a
+href="https://paperswithcode.com/method/bart"&gt;Papers with Code&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;BART is a denoising autoencoder for pretraining sequence-to-sequence
+models. It is trained by (1) corrupting text with an arbitrary noising
+function, and (2) learning a model to reconstruct the original text. It
+uses a standard seq2seq/NMT architecture with a bidirectional encoder
+(like BERT) and a left-to-right decoder (like GPT). In our work, we
+input the question and supporting documents to the BART model and use
+model outputs as answers.&lt;/p&gt;
+&lt;h2 id="results"&gt;4. Results&lt;/h2&gt;
+&lt;h3 id="model-training"&gt;4.1 Model Training&lt;/h3&gt;
+&lt;h4 id="retrierver"&gt;4.1.1 Retrierver&lt;/h4&gt;
+&lt;p&gt;A pretrained &lt;a
+href="https://huggingface.co/google/bert_uncased_L-8_H-768_A-12"&gt;BERT(google/bert_uncased_L-8_H-768_A-12&lt;/a&gt;)
+model is fine-tuned on the training set for 10 epochs.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;GPU: &lt;strong&gt;RTX 2080S&lt;/strong&gt;, epoch: &lt;strong&gt;26 min&lt;/strong&gt;,
+total: &lt;strong&gt;4.5 hours&lt;/strong&gt;, checkpoint size: &lt;strong&gt;930
+MB&lt;/strong&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;The 128-dimensional embeddings of training/validation sets and all
+wiki_snippets are calculated and saved to binary files.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;GPU: &lt;strong&gt;RTX 2080S&lt;/strong&gt;, training/validation sets: &lt;strong&gt;4
+hours&lt;/strong&gt;, wiki_snippets: &lt;strong&gt;11 hours&lt;/strong&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;The top 10 related snippets are then retrieved as supporting
+documents using pre-calculated embeddings. Due to large memory
+requirement, this step is performed on a intel i7-9700K CPU with 48 GB
+DDR4 memory which takes &lt;strong&gt;5 minutes&lt;/strong&gt;.&lt;/p&gt;
+&lt;h4 id="generator"&gt;4.1.2 Generator&lt;/h4&gt;
+&lt;p&gt;A pretained &lt;a
+href="https://huggingface.co/facebook/bart-base"&gt;BART(bart-base)&lt;/a&gt;
+model is fine-tuned on &lt;strong&gt;all answers&lt;/strong&gt; in the training set
+with pre-retrieved supporting documents for 3 epochs. Due to large
+memory requirement, this step is performed on Google Colab with Colab
+Pro.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;GPU: &lt;strong&gt;Colab Pro&lt;/strong&gt;, epoch: &lt;strong&gt;4.5 hours&lt;/strong&gt;,
+total: &lt;strong&gt;14 hours&lt;/strong&gt;, checkpoint size: &lt;strong&gt;1.55
+GB&lt;/strong&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Since &lt;a
+href="https://huggingface.co/facebook/bart-large"&gt;BART(bart-large)&lt;/a&gt;
+model contains 2.8x parameters (400M vs 140M) comparing to bart-base. We
+expected to get more reasonable outputs from that model. Therefore, two
+subsets of training set are used to fine-tune for 10 epochs: (1) 6633
+questions and their &lt;strong&gt;1st answers&lt;/strong&gt; in
+&lt;strong&gt;Chemistry&lt;/strong&gt; category; (2) first 6633 questions and their
+&lt;strong&gt;1st answers&lt;/strong&gt; from training set in
+&lt;strong&gt;multiple&lt;/strong&gt; categories.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;GPU: &lt;strong&gt;Colab Pro&lt;/strong&gt;, epoch: &lt;strong&gt;28 min&lt;/strong&gt;,
+total: &lt;strong&gt;5 hours&lt;/strong&gt;, checkpoint size: &lt;strong&gt;4.54
+GB&lt;/strong&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id="model-comparison"&gt;4.2 Model Comparison&lt;/h3&gt;
+&lt;h4 id="the-absence-of-rogue-metric"&gt;4.2.1 The Absence of ROGUE
+Metric&lt;/h4&gt;
+&lt;p&gt;As mentioned earlier, the ROGUE metric used in the evaluation of the
+model performance is problematic as it gives higher score to some
+seemingly nonsense generated answers while underestimating the top
+answers.&lt;/p&gt;
+&lt;p&gt;To make our life easier, we decide to evaluate the performance of a
+model based on our intuitive judgement.&lt;/p&gt;
+&lt;h4 id="learning-rate-tuning"&gt;4.2.2 Learning Rate Tuning&lt;/h4&gt;
+&lt;p&gt;Note that changing settings of the retriever model requires us to
+re-calculate the 128d embeddings and re-train the generator model, so
+tuning of model settings are only performed on the generator model.&lt;/p&gt;
+&lt;table&gt;
+&lt;colgroup&gt;
+&lt;col width="20%" /&gt;
+&lt;col width="20%" /&gt;
+&lt;col width="15%" /&gt;
+&lt;col width="20%" /&gt;
+&lt;col width="12%" /&gt;
+&lt;col width="12%" /&gt;
+&lt;/colgroup&gt;
+&lt;thead&gt;
+&lt;tr class="header"&gt;
+&lt;th&gt;model&lt;/th&gt;
+&lt;th&gt;dataset&lt;/th&gt;
+&lt;th&gt;size&lt;/th&gt;
+&lt;th&gt;learning rate&lt;/th&gt;
+&lt;th&gt;epochs&lt;/th&gt;
+&lt;th&gt;note&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr class="odd"&gt;
+&lt;td&gt;bart-base&lt;/td&gt;
+&lt;td&gt;full eli5c&lt;/td&gt;
+&lt;td&gt;224088&lt;/td&gt;
+&lt;td&gt;&lt;span class="math inline"&gt;\(2\times10^{-4}\)&lt;/span&gt;&lt;/td&gt;
+&lt;td&gt;3&lt;/td&gt;
+&lt;td&gt;success&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class="even"&gt;
+&lt;td&gt;bart-large&lt;/td&gt;
+&lt;td&gt;chemistry&lt;/td&gt;
+&lt;td&gt;6633&lt;/td&gt;
+&lt;td&gt;&lt;span class="math inline"&gt;\(2\times10^{-4}\)&lt;/span&gt;&lt;/td&gt;
+&lt;td&gt;3&lt;/td&gt;
+&lt;td&gt;fail to converge at epoch0&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class="odd"&gt;
+&lt;td&gt;bart-large&lt;/td&gt;
+&lt;td&gt;chemistry&lt;/td&gt;
+&lt;td&gt;6633&lt;/td&gt;
+&lt;td&gt;&lt;span class="math inline"&gt;\(2\times10^{-3}\)&lt;/span&gt;&lt;/td&gt;
+&lt;td&gt;10&lt;/td&gt;
+&lt;td&gt;fail to converge at epoch0&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class="even"&gt;
+&lt;td&gt;bart-large&lt;/td&gt;
+&lt;td&gt;chemistry&lt;/td&gt;
+&lt;td&gt;6633&lt;/td&gt;
+&lt;td&gt;&lt;span class="math inline"&gt;\(2\times10^{-4}\)&lt;/span&gt;&lt;/td&gt;
+&lt;td&gt;10&lt;/td&gt;
+&lt;td&gt;fail to converge at epoch0&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class="odd"&gt;
+&lt;td&gt;bart-large&lt;/td&gt;
+&lt;td&gt;chemistry&lt;/td&gt;
+&lt;td&gt;6633&lt;/td&gt;
+&lt;td&gt;&lt;span class="math inline"&gt;\(1\times10^{-4}\)&lt;/span&gt;&lt;/td&gt;
+&lt;td&gt;10&lt;/td&gt;
+&lt;td&gt;success until epoch9&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class="even"&gt;
+&lt;td&gt;bart-large&lt;/td&gt;
+&lt;td&gt;chemistry&lt;/td&gt;
+&lt;td&gt;6633&lt;/td&gt;
+&lt;td&gt;&lt;span class="math inline"&gt;\(5\times10^{-5}\)&lt;/span&gt;&lt;/td&gt;
+&lt;td&gt;10&lt;/td&gt;
+&lt;td&gt;success&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class="odd"&gt;
+&lt;td&gt;bart-large&lt;/td&gt;
+&lt;td&gt;random&lt;/td&gt;
+&lt;td&gt;6633&lt;/td&gt;
+&lt;td&gt;&lt;span class="math inline"&gt;\(1\times10^{-4}\)&lt;/span&gt;&lt;/td&gt;
+&lt;td&gt;10&lt;/td&gt;
+&lt;td&gt;fail to converge at epoch0&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class="even"&gt;
+&lt;td&gt;bart-large&lt;/td&gt;
+&lt;td&gt;random&lt;/td&gt;
+&lt;td&gt;6633&lt;/td&gt;
+&lt;td&gt;&lt;span class="math inline"&gt;\(5\times10^{-5}\)&lt;/span&gt;&lt;/td&gt;
+&lt;td&gt;10&lt;/td&gt;
+&lt;td&gt;success&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;blockquote&gt;
+&lt;p&gt;We didn’t capture the interim model training outputs of “failed” or
+overfitted models.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;div class="figure"&gt;
+&lt;img
+src="https://github.com/rexarski/ANLY580-final-project/blob/main/viz/loss-functions.png?raw=true"
+alt="" /&gt;
+&lt;p class="caption"&gt;loss-functions&lt;/p&gt;
+&lt;/div&gt;
+&lt;h4 id="sample-qas"&gt;4.2.3 Sample QAs&lt;/h4&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;a
+href="https://docs.google.com/spreadsheets/d/1mJ2yCqXloo1ZbvOjOVjNDbyq_734XcfmZ7zRMeVnh5Y/edit?usp=sharing"&gt;eli5c_reddit_test📊&lt;/a&gt;
+(Sample answers from various models.)&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id="limitations-and-reflections"&gt;5. Limitations and Reflections&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Due to the limitation of computational power, we cannot train the
+model with &lt;strong&gt;both enough epochs and enough categories
+coverage.&lt;/strong&gt; So we either pick a smaller subset to run more
+epochs, or train the model on the complete dataset but with a few
+epochs. In contrast, Facebook’s trial was conducted on &lt;strong&gt;4 GPUs
+with 3 epochs (18 hours per epoch).&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;However, our selected models seem to have a decent performance with
+less training time and data.&lt;/li&gt;
+&lt;li&gt;It’s hard to measure how our model performs after all. No scientific
+evaluation metrics are involved. A possible solution is to use
+crowdsourcing human evaluation to grade the generated answers by
+correctness and some other linguistic dimensions. Again, this could be
+both time-consuming since the evaluators need extended time to learn
+some facts about the question themselves if they are no experts in those
+areas.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="demo-showcase"&gt;6. Demo Showcase&lt;/h2&gt;
+&lt;p&gt;As proposed in the proposal, a prototype of open-ended
+question-answering website is hosted as a deliverable. The model behind
+it is &lt;code&gt;bart-large(dataset: random6633, learning rate: 5e-5)&lt;/code&gt;.
+Although the model was trained with a small subset of the entire QA
+dataset, it actually delivers some seemingly meaningful answers.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;&lt;a href="http://eli5c.jsgao.me/"&gt;Interactive
+Demo&lt;/a&gt;&lt;/strong&gt; (deployed on personal PC, if not work, try the &lt;a
+href="https://youtu.be/XGEBU51gr00"&gt;backup video demo📼&lt;/a&gt;.)&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://github.com/rexarski/ANLY580-final-project"&gt;GitHub
+Repository🐱&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a
+href="https://drive.google.com/drive/folders/0APh2KjbUaOpxUk9PVA"&gt;Colab
+Playground🧪&lt;/a&gt; (Need GU email or permission to access.).
+&lt;ul&gt;
+&lt;li&gt;&lt;a
+href="https://colab.research.google.com/drive/1NkD-meVW6U2I3WTETAER1LZ7G8db6L1D"&gt;Working
+notebook📙&lt;/a&gt;.&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a
+href="https://huggingface.co/datasets/eli5_category"&gt;eli5_category📚&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;
+&lt;hr /&gt;
+&lt;h2 id="references"&gt;References&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://ai.facebook.com/blog/longform-qa/"&gt;Introducing
+long-form question answering&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://yjernite.github.io/lfqa.html"&gt;Explain Anything Like
+I’m Five: A Model for Open Domain Long Form Question Answering&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a
+href="https://facebookresearch.github.io/ELI5/index.html"&gt;ELI5&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://github.com/facebookresearch/ELI5"&gt;GitHub
+repository&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a
+href="https://research.fb.com/wp-content/uploads/2019/07/ELI5-Long-Form-Question-Answering.pdf"&gt;Paper&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a
+href="https://ai.googleblog.com/2021/03/progress-and-challenges-in-long-form.html"&gt;Progress
+and Challenges in Long-Form Open-Domain Question Answering&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://arxiv.org/abs/2103.06332"&gt;Hurdles to Progress in
+Long-form Question Answering&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://huggingface.co/datasets/wiki40b"&gt;wiki40b&lt;/a&gt;,
+clean-up text for 40+ Wikipedia languages editions of pages correspond
+to entities.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre class="r distill-force-highlighting-css"&gt;&lt;code&gt;&lt;/code&gt;&lt;/pre&gt;</description>
+      <distill:md5>4c4721283fc3a858da9e4024398cda55</distill:md5>
       <guid>https://celeritasml.netlify.app/posts/2021-12-01-eli5c</guid>
       <pubDate>Wed, 01 Dec 2021 00:00:00 +0000</pubDate>
       <media:content url="https://celeritasml.netlify.app/posts/2021-12-01-eli5c/images/eli5c.jpg" medium="image" type="image/jpeg"/>
