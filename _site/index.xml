@@ -7,7 +7,20 @@
     <description>Yet another team cracking machine learning problems.
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Tue, 06 Dec 2022 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 25 Apr 2022 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>ML-powered heart disease screening</title>
+      <dc:creator>Yongrui Chen</dc:creator>
+      <dc:creator>Jingsong Gao</dc:creator>
+      <dc:creator>Ercong Luo</dc:creator>
+      <dc:creator>Rui Qiu</dc:creator>
+      <dc:creator>Lu Zhang</dc:creator>
+      <link>https://celeritasml.netlify.app/posts/2022-04-25-ml-powered-heart-disease-screening</link>
+      <description>Can you know you are at risk of heart disease with easily obtainable personal indicators?</description>
+      <guid>https://celeritasml.netlify.app/posts/2022-04-25-ml-powered-heart-disease-screening</guid>
+      <pubDate>Mon, 25 Apr 2022 00:00:00 +0000</pubDate>
+      <media:content url="https://celeritasml.netlify.app/posts/2022-04-25-ml-powered-heart-disease-screening/images/eda-02.png" medium="image" type="image/png" width="800" height="471"/>
+    </item>
     <item>
       <title>Data Science Career Paths &amp; Skillsets in 2021</title>
       <dc:creator>Jingsong Gao</dc:creator>
@@ -16,7 +29,7 @@
       <link>https://celeritasml.netlify.app/posts/2021-12-06-kaggle</link>
       <description>A final project of ANLY-511: Prob Modeling/Stat Computing at Georgetown University.</description>
       <guid>https://celeritasml.netlify.app/posts/2021-12-06-kaggle</guid>
-      <pubDate>Tue, 06 Dec 2022 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 06 Dec 2021 00:00:00 +0000</pubDate>
       <media:content url="https://celeritasml.netlify.app/posts/2021-12-06-kaggle/images/kaggle.png" medium="image" type="image/png" width="1536" height="960"/>
     </item>
     <item>
@@ -27,7 +40,7 @@
       <link>https://celeritasml.netlify.app/posts/2021-12-01-eli5c</link>
       <description>A final project of ANLY-580: NLP for Data Analytics at Georgetown University.</description>
       <guid>https://celeritasml.netlify.app/posts/2021-12-01-eli5c</guid>
-      <pubDate>Thu, 01 Dec 2022 00:00:00 +0000</pubDate>
+      <pubDate>Wed, 01 Dec 2021 00:00:00 +0000</pubDate>
       <media:content url="https://celeritasml.netlify.app/posts/2021-12-01-eli5c/images/eli5c.jpg" medium="image" type="image/jpeg"/>
     </item>
   </channel>
