@@ -40,11 +40,11 @@ According to the CDC, heart disease is a leading natural cause of death in the U
     - As a respondent’s age increases, the probability of having heart disease so tends to ascend.
     - It is statistically significant that the average BMI of men is higher than that of women, and a higher BMI is associated with a higher risk for heart disease.
 
-![eda-01](images/eda-01.png)
+![](images/eda-01.png)
 
-![eda-02](images/eda-02.png)
+![](images/eda-02.png)
 
-![eda-03](images/eda-03.png)
+![](images/eda-03.png)
 
 ## Models
 
@@ -69,9 +69,9 @@ Since the goal of these models is to detect potential heart disease in the early
 
 **Logistic regression, LDA, and XGBoost are the best models** in terms of overall performance. **XGBoost model has the highest recall, J index, and PR-AUC**. By examining ROC and PRC for each of five models, one can also conclude that the XGBoost model is indeed the best option in general.
 
-![ROC-AUC](images/roc_auc.png)
+![ROC-AUC.](images/roc_auc.png)
 
-![PRC](images/prc.png)
+![Precision-Recall curve.](images/prc.png)
 
 Additionally, relative feature importance in logistic regression and XGBoost are analyzed to determine whether a factor is related to heart disease. The most relevant variables are listed below (in descending order of importance, **positive**/_negative_):
 
@@ -79,12 +79,12 @@ Additionally, relative feature importance in logistic regression and XGBoost are
 
 > *may not be true due to data bias.
 
-![vip](images/vip-xgboost.png)
+![Feature importance.](images/vip-xgboost.png)
 
 ## Conclusion
 
 Key takeaways of this study can be summarized as follows:
 
 1. All five models agree that **age, general health status, and pre-existing conditions are key risk indicators for heart disease**.
-Features that are easily obtainable and do not need a hospital visit such as age, fitness level, BMI can be used to train robust ML models to identify people with high risk of heart disease. **A practical application can be deployed using the XGBoost model to notify a user through their health app when their health status indicates high risks for heart disease and recommend a hospital visit for an accurate diagnosis**. 
-With a training dataset that under-represents positive cases, **low false-positive vs low false-negative rate is a trade-off**. Because keeping the false negative rate low is a priority, slightly sacrificing accuracy in favor of a lower false-negative rate is a necessary compromise. This is also why these screening models cannot replace medical imaging and clinical laboratory tests for heart disease diagnosis. **Screening isn’t diagnosis**.
+2. Features that are easily obtainable and do not need a hospital visit such as age, fitness level, BMI can be used to train robust ML models to identify people with high risk of heart disease. **A practical application can be deployed using the XGBoost model to notify a user through their health app when their health status indicates high risks for heart disease and recommend a hospital visit for an accurate diagnosis**. 
+3. With a training dataset that under-represents positive cases, **low false-positive vs low false-negative rate is a trade-off**. Because keeping the false negative rate low is a priority, slightly sacrificing accuracy in favor of a lower false-negative rate is a necessary compromise. This is also why these screening models cannot replace medical imaging and clinical laboratory tests for heart disease diagnosis. **Screening isn’t diagnosis**.

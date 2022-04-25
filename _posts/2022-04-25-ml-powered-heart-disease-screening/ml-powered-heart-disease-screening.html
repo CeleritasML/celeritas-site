@@ -1554,18 +1554,9 @@ higher than that of women, and a higher BMI is associated with a higher
 risk for heart disease.</li>
 </ul></li>
 </ul>
-<figure>
-<img src="images/eda-01.png" alt="eda-01" />
-<figcaption aria-hidden="true">eda-01</figcaption>
-</figure>
-<figure>
-<img src="images/eda-02.png" alt="eda-02" />
-<figcaption aria-hidden="true">eda-02</figcaption>
-</figure>
-<figure>
-<img src="images/eda-03.png" alt="eda-03" />
-<figcaption aria-hidden="true">eda-03</figcaption>
-</figure>
+<p><img src="images/eda-01.png" /></p>
+<p><img src="images/eda-02.png" /></p>
+<p><img src="images/eda-03.png" /></p>
 <h2 id="models">Models</h2>
 <p>The original dataset is split into 80%-20% train-test subsets.
 Furthermore, an additional 10-fold cross-validation is carried out for
@@ -1611,12 +1602,12 @@ has the highest recall, J index, and PR-AUC</strong>. By examining ROC
 and PRC for each of five models, one can also conclude that the XGBoost
 model is indeed the best option in general.</p>
 <figure>
-<img src="images/roc_auc.png" alt="ROC-AUC" />
-<figcaption aria-hidden="true">ROC-AUC</figcaption>
+<img src="images/roc_auc.png" alt="ROC-AUC." />
+<figcaption aria-hidden="true">ROC-AUC.</figcaption>
 </figure>
 <figure>
-<img src="images/prc.png" alt="PRC" />
-<figcaption aria-hidden="true">PRC</figcaption>
+<img src="images/prc.png" alt="Precision-Recall curve." />
+<figcaption aria-hidden="true">Precision-Recall curve.</figcaption>
 </figure>
 <p>Additionally, relative feature importance in logistic regression and
 XGBoost are analyzed to determine whether a factor is related to heart
@@ -1632,27 +1623,29 @@ exercise</em></p>
 <p>*may not be true due to data bias.</p>
 </blockquote>
 <figure>
-<img src="images/vip-xgboost.png" alt="vip" />
-<figcaption aria-hidden="true">vip</figcaption>
+<img src="images/vip-xgboost.png" alt="Feature importance." />
+<figcaption aria-hidden="true">Feature importance.</figcaption>
 </figure>
 <h2 id="conclusion">Conclusion</h2>
 <p>Key takeaways of this study can be summarized as follows:</p>
 <ol type="1">
 <li>All five models agree that <strong>age, general health status, and
 pre-existing conditions are key risk indicators for heart
-disease</strong>. Features that are easily obtainable and do not need a
-hospital visit such as age, fitness level, BMI can be used to train
-robust ML models to identify people with high risk of heart disease.
-<strong>A practical application can be deployed using the XGBoost model
-to notify a user through their health app when their health status
-indicates high risks for heart disease and recommend a hospital visit
-for an accurate diagnosis</strong>. With a training dataset that
-under-represents positive cases, <strong>low false-positive vs low
-false-negative rate is a trade-off</strong>. Because keeping the false
-negative rate low is a priority, slightly sacrificing accuracy in favor
-of a lower false-negative rate is a necessary compromise. This is also
-why these screening models cannot replace medical imaging and clinical
-laboratory tests for heart disease diagnosis. <strong>Screening isn’t
+disease</strong>.</li>
+<li>Features that are easily obtainable and do not need a hospital visit
+such as age, fitness level, BMI can be used to train robust ML models to
+identify people with high risk of heart disease. <strong>A practical
+application can be deployed using the XGBoost model to notify a user
+through their health app when their health status indicates high risks
+for heart disease and recommend a hospital visit for an accurate
+diagnosis</strong>.</li>
+<li>With a training dataset that under-represents positive cases,
+<strong>low false-positive vs low false-negative rate is a
+trade-off</strong>. Because keeping the false negative rate low is a
+priority, slightly sacrificing accuracy in favor of a lower
+false-negative rate is a necessary compromise. This is also why these
+screening models cannot replace medical imaging and clinical laboratory
+tests for heart disease diagnosis. <strong>Screening isn’t
 diagnosis</strong>.</li>
 </ol>
 <div class="sourceCode" id="cb1"><pre
