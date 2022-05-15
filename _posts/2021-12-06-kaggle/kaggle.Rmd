@@ -31,4 +31,4 @@ Presented by:
 - Ercong Luo, el890@georgetown.edu
 - Rui Qiu, rq47@georgetown.edu
 
-**🔗[See the published page.](https://celeritasml.github.io/kaggle-ml-survey/)**
+**🔗 [See the published page.](https://celeritasml.github.io/kaggle-ml-survey/)**

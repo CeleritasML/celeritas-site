@@ -21,7 +21,7 @@ output:
     self_contained: false
 ---
 
-[🔗GitHub repo](https://github.com/CeleritasML/heart-disease-prediction) 
+[🔗 GitHub repo](https://github.com/CeleritasML/heart-disease-prediction) 
 
 ## Abstract
 

@@ -1,0 +1,29 @@
+---
+title: "Project Japanese Cuisine"
+subtitle: "What ingredients are you tasting in authentic Japanese flavors?"
+description: |
+  We hope reveal what makes a Japanese dish authentic and present non-static visualizations that a user may interact with for their own personal inquiry.
+author:
+  - name: Jingsong Gao
+    url: https://github.com/jingshenSN2
+  - name: Yu Kang
+    url: https://github.com/yk685
+  - name: Chao Li
+    url: https://github.com/Cholianlll
+  - name: Ercong Luo
+    url: https://github.com/ErcongLuo
+  - name: Rui Qiu
+    url: https://github.com/rexarski
+preview: https://github.com/CeleritasML/project-japanese-cuisine/raw/main/thumbnail.png
+date: 2022-05-14
+output:
+  distill::distill_article:
+    self_contained: false
+---
+
+[🍱 Project page](https://celeritasml.github.io/project-japanese-cuisine/)
+
+[🔗 GitHub repo](https://github.com/CeleritasML/project-japanese-cuisine)
+
+This repository was transferred from the original university organization.
+

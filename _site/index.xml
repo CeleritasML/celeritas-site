@@ -7,7 +7,20 @@
     <description>Yet another team cracking machine learning problems.
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Mon, 25 Apr 2022 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 14 May 2022 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>Project Japanese Cuisine</title>
+      <dc:creator>Jingsong Gao</dc:creator>
+      <dc:creator>Yu Kang</dc:creator>
+      <dc:creator>Chao Li</dc:creator>
+      <dc:creator>Ercong Luo</dc:creator>
+      <dc:creator>Rui Qiu</dc:creator>
+      <link>https://celeritasml.netlify.app/posts/2022-05-14-project-japanese-cuisine</link>
+      <description>We hope reveal what makes a Japanese dish authentic and present non-static visualizations that a user may interact with for their own personal inquiry.</description>
+      <guid>https://celeritasml.netlify.app/posts/2022-05-14-project-japanese-cuisine</guid>
+      <pubDate>Sat, 14 May 2022 00:00:00 +0000</pubDate>
+      <media:content url="https://github.com/CeleritasML/project-japanese-cuisine/raw/main/thumbnail.png" medium="image" type="image/png"/>
+    </item>
     <item>
       <title>ML-powered heart disease screening</title>
       <dc:creator>Yongrui Chen</dc:creator>
